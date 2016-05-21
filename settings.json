@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Button text",
+    "input": "color",
+    "selectors": [
+      {
+        "selector": ".button.special",
+        "style": "background-color"
+      },
+      {
+        "selector": ".button.notSoSpecial",
+        "style": "color"
+      }
+    ],
+    "areas": ["homepage", "detail", "category", "basket"]
+  },
+  {
+    "name": "Text on hover",
+    "input": "color",
+    "selectors": [
+      {
+        "selector": "#banner p",
+        "style": "color"
+      },
+      {
+        "selector": "#banner h2",
+        "style": "color"
+      }
+    ],
+    "areas": ["homepage", "detail", "category", "basket"]
+  },
+  {
+    "name": "Wrapper background",
+    "input": "color",
+    "selectors": [
+      {
+        "selector": ".wrapper",
+        "style": "background-color"
+      }
+    ],
+    "areas": ["homepage", "detail", "category", "basket"]
+  },
+  {
+    "name": "Wrapper item background",
+    "input": "color",
+    "selectors": [
+      {
+        "selector": ".wrapper.style2 .spotlight",
+        "style": "background-color"
+      }
+    ],
+    "areas": ["homepage", "detail", "category", "basket"]
+  }
+]
