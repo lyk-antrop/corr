@@ -2,9 +2,9 @@
  * CORR - Realtime colorpicker with readable JSON output
  */
 
-var irisPath = "http://cdn.flnr.net/corr/iris/dist/iris.min.js";
-var slideRevealPath = "http://cdn.flnr.net/corr/jquery.slidereveal.min.js";
-var serverUrl = "http://cdn.flnr.net/corr/saveHandler.php";
+var irisPath = "http://corr.flnr.net/iris/dist/iris.min.js";
+var slideRevealPath = "http://corr.flnr.net/jquery.slidereveal.min.js";
+var serverUrl = "http://corr.flnr.net/saveHandler.php";
 var activeStylesheet = "oxid_layout.css";
 var undefinedColor = "rgb(0,0,0)";
 var specificRules = ":before";
