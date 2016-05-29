@@ -1,1 +1,4 @@
 .well-known/
+composer.lock
+vendor/
+config.yml

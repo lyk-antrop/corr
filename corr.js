@@ -2,9 +2,10 @@
  * CORR - Realtime colorpicker with readable JSON output
  */
 
+var calls = 0;
 var irisPath = "http://corr.flnr.net/iris/dist/iris.min.js";
 var slideRevealPath = "http://corr.flnr.net/jquery.slidereveal.min.js";
-var serverUrl = "http://corr.flnr.net/saveHandler.php";
+var serverUrl = "http://corr.flnr.net/saveHandler.php?callback=?";
 var activeStylesheet = "oxid_layout.css";
 var undefinedColor = "rgb(0,0,0)";
 var specificRules = ":before";
@@ -390,8 +391,9 @@ var settings = [
  * @return {string}   input       html input
  */
 function createInput(key, jsonRow) {
-    input  = "<label>" + jsonRow.name + "<input type='text' class='iris' "; // id='" + jsonRow.section + "'
+    input  = "<label>" + jsonRow.name + "<input type='text' class='iris iris-input' "; // id='" + jsonRow.section + "'
     input += "iris-color='" + getDefaultColor(jsonRow.selectors[0]) + "' iris-id='" + key + "'>";
+    // input += "<div class='iris-rounder'>&nbsp;</div>";
     input += "</label>"
 
     return input;
@@ -586,6 +588,18 @@ function getStyleSheet() {
 }
 
 /**
+ * Generates unique ID
+ *
+ * @return {string} unique id
+ */
+function getGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+        return v.toString(16);
+    });
+}
+
+/**
  * This is where the magic begins
  */
 
@@ -596,9 +610,6 @@ $.when(
         $(deferred.resolve);
     })
 ).done(function(){
-
-    console.log(styles);
-
     var corrPanel = $(document.createElement('div')).addClass('corr-panel').appendTo('body');
     var corrButton = $(document.createElement('span')).html(layoutEdit).addClass('corr-toggle').appendTo('body');
 
@@ -633,21 +644,24 @@ $.when(
     // cancel handler
     $('.corr-submit').click(function() {
         if (confirm("Opravdu chcete odeslat současné nastavení?")) {
-            console.log(serverUrl);
-            console.log(JSON.stringify(styles));
-            $.ajax({
-                url: serverUrl,
-                dataType: "jsonp",
-                callback: function(entry) {
-                    console.log(entry);
-                },
-                data: {
-                    "d": JSON.stringify(styles),
-                },
-                success: function(result) {
-                    console.log(result);
-                    // $("#div1").html(result);
-                }
+            guid = getGuid();
+            $.each(styles, function(selector, styleObject) {
+                $.each(styleObject, function(index, cssRow) {
+                    calls += 1;
+                    queryAttrs = 't='+guid+'&sel='+selector+'&stl='+cssRow.style+'&val='+cssRow.value;
+                    queryAttrs = queryAttrs.replace(/[#]/g,'%23');
+                    $.getJSON(serverUrl, queryAttrs, function(result) {
+                        if (result.result === 1) {
+                            calls -= 1;
+                            if (calls === 0) {
+                                prompt("Zkopírujte si své identifikační číslo:", guid);
+                            }
+                        } else {
+                            alert("Při odesílání došlo k chybě");
+                            return false;
+                        }
+                    });
+                });
             });
         }
     });
@@ -680,4 +694,12 @@ $.when(
             $el.iris('show');
         });
     });
+});
+
+$(document).ajaxStop(function() {
+    console.log("ASA");
+    console.log(calls);
+    if (calls == 0) {
+        alert("GREAT SUCCESS - "+guid);
+    }
 });

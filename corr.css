@@ -82,3 +82,13 @@
 .corr-panel .iris-picker {
     margin: 0 25px 15px 25px;
 }
+
+.corr-panel .iris-rounder {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    position: absolute;
+    margin: -38px 24px 0 0;
+    right: 0;
+    background: #EEE;
+}
