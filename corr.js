@@ -645,10 +645,11 @@ $.when(
     $('.corr-submit').click(function() {
         if (confirm("Opravdu chcete odeslat současné nastavení?")) {
             guid = getGuid();
+
             $.each(styles, function(selector, styleObject) {
                 $.each(styleObject, function(index, cssRow) {
                     calls += 1;
-                    queryAttrs = 't='+guid+'&sel='+selector+'&stl='+cssRow.style+'&val='+cssRow.value;
+                    queryAttrs = 's='+location.hostname+'&t='+guid+'&sel='+selector+'&stl='+cssRow.style+'&val='+cssRow.value;
                     queryAttrs = queryAttrs.replace(/[#]/g,'%23');
                     $.getJSON(serverUrl, queryAttrs, function(result) {
                         if (result.result === 1) {

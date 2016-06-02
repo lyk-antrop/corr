@@ -7,13 +7,14 @@ $config = Yaml::parse(file_get_contents('config.yml'));
 $pdo = new PDO(sprintf('mysql:host=%s;dbname=%s', $config['dbhost'], $config['dbname']), $config['dbuser'], $config['dbpass']);
 
 $mappings = [
+    'hostname' => $_GET['s'],
     'uuid'     => $_GET['t'],
     'selector' => $_GET['sel'],
     'row'      => $_GET['stl'],
     'value'    => $_GET['val'],
 ];
 
-$stmt = $pdo->prepare('INSERT INTO styles(`uuid`, `selector`, `row`, `value`) VALUES (:uuid, :selector, :row, :value)');
+$stmt = $pdo->prepare('INSERT INTO styles(`hostname`, `uuid`, `selector`, `row`, `value`) VALUES (:hostname, :uuid, :selector, :row, :value)');
 $result = ((int) $stmt->execute($mappings) ?: $stmt->errorCode());
 
 echo $_GET['callback'] . '(' . json_encode(['result' => $result, 'selector' => $mappings['selector']]) . ')';
