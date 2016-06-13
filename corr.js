@@ -159,6 +159,28 @@ var settings = [
         "areas": ["start", "details", "alist", "basket"]
     },
     {
+        "name": "Nákupní košík - ikona",
+        "input": "color",
+        "selectors": [
+            {
+                "selector": ".oxid #top_basket:before",
+                "style": "color"
+            }
+        ],
+        "areas": ["start", "details", "alist", "basket"]
+    },
+    {
+        "name": "Nákupní košík - pozadí",
+        "input": "background-color",
+        "selectors": [
+            {
+                "selector": ".oxid #top_basket:before",
+                "style": "background"
+            }
+        ],
+        "areas": ["start", "details", "alist", "basket"]
+    },
+    {
         "name": "Menu kategorií",
         "input": "color",
         "selectors": [
@@ -185,7 +207,7 @@ var settings = [
         "areas": ["start", "details", "alist", "basket"]
     },
     {
-        "name": "Menu kategorií - podbarvení po najetí",
+        "name": "Menu kategorií - aktivní",
         "input": "color",
         "selectors": [
             {
@@ -392,11 +414,27 @@ var settings = [
  */
 function createInput(key, jsonRow) {
     input  = "<label>" + jsonRow.name + "<input type='text' class='iris iris-input' "; // id='" + jsonRow.section + "'
-    input += "iris-color='" + getDefaultColor(jsonRow.selectors[0]) + "' iris-id='" + key + "'>";
+    input += "iris-color='" + getRowColor(jsonRow) + "' iris-id='" + key + "'>";
     // input += "<div class='iris-rounder'>&nbsp;</div>";
     input += "</label>"
 
     return input;
+}
+
+/**
+ * Gets row color - iterates all row selectorObjects to apply styles globally
+ *
+ * @internal Now we are setting color over and over, it would be fine to do it once
+ *           and just apply styles to other selectorObjects
+ * @param  {json} jsonRow   row from settings
+ * @return {string}         color hex code
+ */
+function getRowColor(jsonRow) {
+    $.each(jsonRow.selectors, function(index, selectorObject) {
+        color = getDefaultColor(selectorObject);
+    });
+
+    return color;
 }
 
 /**
@@ -695,12 +733,4 @@ $.when(
             $el.iris('show');
         });
     });
-});
-
-$(document).ajaxStop(function() {
-    console.log("ASA");
-    console.log(calls);
-    if (calls == 0) {
-        alert("GREAT SUCCESS - "+guid);
-    }
 });
