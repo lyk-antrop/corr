@@ -3,9 +3,9 @@
  */
 
 var calls = 0;
-var irisPath = "http://corr.flnr.net/iris/dist/iris.min.js";
-var slideRevealPath = "http://corr.flnr.net/jquery.slidereveal.min.js";
-var serverUrl = "http://corr.flnr.net/saveHandler.php?callback=?";
+var irisPath = "http://corr.devel33.oxyshop.cz/iris/dist/iris.min.js";
+var slideRevealPath = "http://corr.devel33.oxyshop.cz/jquery.slidereveal.min.js";
+var serverUrl = "http://corr.devel33.oxyshop.cz/saveHandler.php?callback=?";
 var activeStylesheet = "oxid_layout.css";
 var undefinedColor = "rgb(0,0,0)";
 var specificRules = ":before";
