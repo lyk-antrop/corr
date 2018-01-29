@@ -14,7 +14,11 @@ $mappings = [
     'value'    => $_GET['val'],
 ];
 
-$stmt = $pdo->prepare('INSERT INTO styles(`hostname`, `uuid`, `selector`, `row`, `value`) VALUES (:hostname, :uuid, :selector, :row, :value)');
+// !nocommit
+print_r ( $config);
+die;
+
+$stmt = $pdo->prepare ( 'INSERT INTO styles (`hostname`, `uuid`, `selector`, `row`, `value`) VALUES (:hostname, :uuid, :selector, :row, :value)');
 $result = ((int) $stmt->execute($mappings) ?: $stmt->errorCode());
 
 echo $_GET['callback'] . '(' . json_encode(['result' => $result, 'selector' => $mappings['selector']]) . ')';

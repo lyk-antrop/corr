@@ -1,0 +1,4 @@
+dbhost: localhost
+dbname: corr
+dbuser: corr_user
+dbpass: corr_pass
