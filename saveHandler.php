@@ -14,10 +14,6 @@ $mappings = [
     'value'    => $_GET['val'],
 ];
 
-// !nocommit
-print_r ( $config);
-die;
-
 $stmt = $pdo->prepare ( 'INSERT INTO styles (`hostname`, `uuid`, `selector`, `row`, `value`) VALUES (:hostname, :uuid, :selector, :row, :value)');
 $result = ((int) $stmt->execute($mappings) ?: $stmt->errorCode());
 
