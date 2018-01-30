@@ -19,14 +19,45 @@ $result = ((int) $stmt->execute($mappings) ?: $stmt->errorCode());
 
 echo $_GET['callback'] . '(' . json_encode(['result' => $result, 'selector' => $mappings['selector']]) . ')';
 
-// -- DB VIEW
-// SELECT uuid, CONCAT('{', GROUP_CONCAT(selectorrow), '}') as cookie FROM
-// (
-//     SELECT uuid, CONCAT('"', selector,'":[',GROUP_CONCAT(style), "]") as selectorrow
-//     FROM (
-//         SELECT uuid, selector, CONCAT('{"style":"', `row`, '","value":"', `value`,'"}') as style
-//         FROM styles as stylerow
-//     ) as stylerows
-//     GROUP BY stylerows.selector
-// ) as cookierows
-// GROUP BY uuid
+// VIEW v_stylerows
+// select
+//     `oxid_r2g_corr`.`styles`.`hostname` AS `hostname`,
+//     `oxid_r2g_corr`.`styles`.`created_at` AS `created_at`,
+//     `oxid_r2g_corr`.`styles`.`uuid` AS `uuid`,
+//     concat(
+//         '"',
+//         `oxid_r2g_corr`.`styles`.`selector`,
+//         '":[',
+//         group_concat(
+//             concat(
+//                 '{"style":"',
+//                 `oxid_r2g_corr`.`styles`.`row`,
+//                 '","value":"',
+//                 `oxid_r2g_corr`.`styles`.`value`,
+//                 '"}'
+//             ) separator ','
+//         ),
+//         ']'
+//     ) AS `selectorrow`
+// from
+//     `oxid_r2g_corr`.`styles`
+// group by
+//     `oxid_r2g_corr`.`styles`.`uuid`,
+//     `oxid_r2g_corr`.`styles`.`selector`
+
+// VIEW v_cookies
+// select
+//     `v_stylerows`.`hostname` AS `hostname`,
+//     `v_stylerows`.`created_at` AS `created_at`,
+//     `v_stylerows`.`uuid` AS `uuid`,
+//     concat(
+//         '{',
+//         group_concat(
+//             `v_stylerows`.`selectorrow` separator ','
+//         ),
+//         '}'
+//     ) AS `cookie`
+// from
+//     `oxid_r2g_corr`.`v_stylerows`
+// group by
+//     `v_stylerows`.`uuid`
